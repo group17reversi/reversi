@@ -1,0 +1,47 @@
+package ��ת��;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.JPanel;
+
+public class ChessBoard extends Frame{
+	public Image icon;
+	public ChessBoard(){
+		setSize(800,800);
+		this.setVisible(true);
+		icon=Toolkit.getDefaultToolkit().getImage("src/timg.jpg");
+		if(icon==null) {
+			System.err.println("png do not exit");
+		}
+	}
+	public void paint(Graphics g) {
+		Font f=new Font("Arial",Font.BOLD,30);
+		g.setFont(f);
+		int len=80;
+		//g.drawRect(50, 50, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+		for(int i=0;i<9;i++) {
+			g.drawLine(80, i*len+200, 720, i*len+200);
+		}
+		//9�����ߣ����߿�
+		
+		for(int i=0;i<9;i++) {
+			g.drawLine(i*len+80, 200, i*len+80, 840);
+		}
+		//9�����ߣ����߿�
+		int x=(Constant.WINDOW_WIDTH+50)/3;
+		int y=Constant.WINDOW_HEIGHT+150;
+		g.drawImage(icon,x,y,null);
+		
+		setBackground(Color.PINK);
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new ChessBoard();
+	}
+
+}
