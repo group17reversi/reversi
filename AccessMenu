@@ -1,0 +1,47 @@
+package ��ת��;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+//import model.Game;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+import javax.swing.JPanel;
+
+public class AccessMenu extends JFrame {
+	public void drawString(Graphics g, String text, Rectangle rect, int size) {
+		Graphics2D gra=(Graphics2D)g.create();
+		Font font=new Font(Font.DIALOG_INPUT,Font.BOLD,size);
+		gra.setFont(font);
+		FontMetrics metrics=gra.getFontMetrics();
+		int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+		int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+		gra.setColor(Color.CYAN);
+		gra.drawString(text, x, y);	
+	}
+	/*
+	 *
+	 */
+
+	public void paintComponent(Graphics g) {
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0,Constant.WINDOW_WIDTH , Constant.WINDOW_HEIGHT);
+		drawString(g,"REVERSI",new Rectangle(Constant.WINDOW_WIDTH/3,Constant.WINDOW_HEIGHT/7,Constant.WINDOW_WIDTH/3, Constant.WINDOW_HEIGHT/ 3), 30);
+		drawString(g,"Press N to Start A New Game",new Rectangle(Constant.WINDOW_WIDTH/3,2*Constant.WINDOW_HEIGHT/7,Constant.WINDOW_WIDTH/3,Constant.WINDOW_HEIGHT/3),20);
+		drawString(g,"Press H to See Highest Score",new Rectangle(Constant.WINDOW_WIDTH/3,3*Constant.WINDOW_HEIGHT/7,Constant.WINDOW_WIDTH/3,Constant.WINDOW_HEIGHT/3),20);
+		drawString(g,"Press A to Know More about the Game",new Rectangle(Constant.WINDOW_WIDTH/3,4*Constant.WINDOW_HEIGHT/7,Constant.WINDOW_WIDTH/3,Constant.WINDOW_HEIGHT/3),18);
+		drawString(g,"Press E to Exit",new Rectangle(Constant.WINDOW_WIDTH/3,5*Constant.WINDOW_HEIGHT/7,Constant.WINDOW_WIDTH/3,Constant.WINDOW_HEIGHT/3),18);
+		
+	}
+	
+     
+}
