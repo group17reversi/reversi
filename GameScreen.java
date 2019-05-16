@@ -1,6 +1,7 @@
- package reversi;
+package Reversi;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -14,118 +15,109 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
+public class GameScreen extends JFrame implements MouseListener {
 
-
-public class GameScreen extends  JFrame implements MouseListener{
-	
-	int width=Toolkit.getDefaultToolkit().getScreenSize().width;
-	int height=Toolkit.getDefaultToolkit().getScreenSize().height;
-	BufferedImage bgImage=null;
-	
-	
-	int x=0;
-	int y=0;
-	
-	//0没有棋子1黑子2白字
-	int[][] allChess=new int[8][8];
-	//标识当前棋色
-	boolean isBlack=true;
-	
+	int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+	int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+	BufferedImage bgImage = null;
+	//棋子坐标
+	int x = 0;
+	int y = 0;
+	//保存之前下的棋子坐标
+	//0 无棋子，1 黑棋，2 白棋
+	int [][] allChess = new int[8][8];
+	//当前棋色
+	boolean isBlack = true;
+	//初始化棋盘
+	Initialize c = new Initialize(allChess);
 	
 	public GameScreen() {
 		this.setTitle("Reversi");
-		this.setSize(Constant.Width,Constant.Height);
-		this.setLocation((width-950)/2,(height-750)/2);
-		//窗体设置大小不可改变
+		this.setSize(Constant.Width ,Constant.Height );
+		this.setLocation((width - Constant.Width)/2, (height - Constant.Height)/2);
+		//窗体大小不可变
 		this.setResizable(false);
-		//关闭后程序结束
+		//默认关闭后程序结束
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
 		try {
-			bgImage=ImageIO.read(new File("./Image/background.jpg"));
+			bgImage = ImageIO.read(new File("./Image/background.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.addMouseListener(this);
+		//显示窗体
 		this.setVisible(true);
-		Initialize i=new Initialize(allChess);
-		i.initialize();
 	}
-	public void paint(Graphics g) {		
-		g.drawImage(bgImage,10,25,this);
-		
-		
-		Chess chess=new Chess(allChess);
-		
-		ChessState state = new ChessState(allChess,isBlack);
-		state.judgeState();	
-		chess.paint(g);
-		
+	
+	public void paint(Graphics g) {
+		g.drawImage(bgImage, 10, 25, this);
+		ChessState state = new ChessState(allChess, isBlack);
+		state.judgeState();
+		Chess chess = new Chess(allChess);
+		chess.Draw(g);
+		chess.Count();
+		g.setFont(new Font("黑体",Font.BOLD,40));
+		g.drawString(String.valueOf(chess.Black()), 860, 270);
+		g.drawString(String.valueOf(chess.White()), 860, 370);
 	}
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-                                                                                                                                                                                                                                          		
-	}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		x=e.getX();
-		y=e.getY();
-		//System.out.println(x);
-		//System.out.println(y);
-		
-		if(x>=42 && x<=634 &&y>=64 && y<=656) {
-			x=(x-42)/Constant.Grid_Length;
-			y=(y-64)/Constant.Grid_Length;
-			
-			if(allChess[x][y]==3) {
-				if(isBlack==true) {
-					allChess[x][y]=1;
-					isBlack=false;
+		// TODO Auto-generated method stub
+		System.out.println(e.getX());
+		System.out.println(e.getY());
+		x = e.getX();
+		y = e.getY();
+		if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
+			x = (x - 42) / Constant.Grid_Length;
+			y = (y - 64) / Constant.Grid_Length;
+			if(allChess[x][y] == 3) {
+				if(isBlack == true) {
+					allChess[x][y] = 1;
+					isBlack = false;
 				}else {
-					allChess[x][y]=2;
-					isBlack=true;
+					allChess[x][y] = 2;
+					isBlack = true;
 				}
-				Reversal reverstal =new Reversal(allChess,x,y);
-				reverstal.change();
-			}
-			else if(allChess[x][y]==0) {
-				JOptionPane.showMessageDialog(this, "illege2");
-			}
-			
-			else {
-				JOptionPane.showMessageDialog(this, "illege");
+				Reversal r = new Reversal(allChess,x,y);
+				r.change();
+			}else if(allChess[x][y] == 0) {
+				JOptionPane.showMessageDialog(this,"You can not put chess here.");
+			}else {
+				JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
 			}
 			//state.judgeState();
 			this.repaint();
 		}
-		if(x>=694 && x<=874 &&y>=472 && y<=540) {
-			Initialize i=new Initialize(allChess);
-			i.initialize();
+		if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
+			isBlack = true;
+			c = new Initialize(allChess);
+			this.repaint();
 		}
-		
-		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }
