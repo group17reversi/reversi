@@ -82,42 +82,49 @@ public class GameScreen extends JFrame implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(e.getX());
-		System.out.println(e.getY());
-		x = e.getX();
-		y = e.getY();
-		if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
-			x = (x - 42) / Constant.Grid_Length;
-			y = (y - 64) / Constant.Grid_Length;
-			if(allChess[x][y] == 3) {
-				if(isBlack == true) {
+		//System.out.println(e.getX());
+		//System.out.println(e.getY());
+		if(isBlack == true) {
+			x = e.getX();
+			y = e.getY();
+			if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
+				x = (x - 42) / Constant.Grid_Length;
+				y = (y - 64) / Constant.Grid_Length;
+				if(allChess[x][y] == 3) {
 					allChess[x][y] = 1;
 					isBlack = false;
+					Reversal r = new Reversal(allChess,x,y);
+					r.change();
+				}else if(allChess[x][y] == 0) {
+					JOptionPane.showMessageDialog(this,"You can not put chess here.");
 				}else {
-					allChess[x][y] = 2;
-					isBlack = true;
+					JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
 				}
-				Reversal r = new Reversal(allChess,x,y);
-				r.change();
-			}else if(allChess[x][y] == 0) {
-				JOptionPane.showMessageDialog(this,"You can not put chess here.");
-			}else {
-				JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
+				//state.judgeState();
+				this.repaint();
 			}
-			//state.judgeState();
-			this.repaint();
-		}
-		if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
+			if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
+				isBlack = true;
+				c = new Initialize(allChess);
+				this.repaint();
+			}
+		}else {
+			Minimax m = new Minimax();
+			allChess = m.Min(allChess);
+			//x = m.getX();
+			//y = m.getY();
+			//allChess[x][y] = 2;
 			isBlack = true;
-			c = new Initialize(allChess);
+			Reversal r = new Reversal(allChess,x,y);
+			r.change();
 			this.repaint();
 		}
+		
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
