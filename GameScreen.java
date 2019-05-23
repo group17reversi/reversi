@@ -1,6 +1,6 @@
-package Reversi;
+ package reversi;
 
-import java.awt.Color;
+ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -60,6 +60,14 @@ public class GameScreen extends JFrame implements MouseListener {
 		g.setFont(new Font("ºÚÌå",Font.BOLD,40));
 		g.drawString(String.valueOf(chess.Black()), 860, 270);
 		g.drawString(String.valueOf(chess.White()), 860, 370);
+		if(isBlack==true) {
+			g.setFont(new Font("Adobe Gothic Std B",Font.BOLD,32));
+			g.drawString("Black  Turn",710,215);
+		}
+		else if(isBlack==false) {
+			g.setFont(new Font("Adobe Gothic Std B",Font.BOLD,32));
+			g.drawString("White  Turn",710,215);
+		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -85,6 +93,7 @@ public class GameScreen extends JFrame implements MouseListener {
 		//System.out.println(e.getX());
 		//System.out.println(e.getY());
 		if(isBlack == true) {
+			
 			x = e.getX();
 			y = e.getY();
 			if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
