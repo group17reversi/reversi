@@ -1,0 +1,103 @@
+package 翻转棋;
+
+import java.awt.FlowLayout;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+//import model.Game;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JPanel;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class AccessMenu extends JFrame implements MouseListener {
+	
+	int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+	int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+	
+	BufferedImage bgImage = null;
+	
+	int x=0;
+	int y=0;
+	
+	
+	
+	
+	
+	
+	public AccessMenu() {
+		this.setTitle("Reversi");
+		this.setSize(Constant.Width,Constant.Height);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocation((width - Constant.Width)/2, (height - Constant.Height)/2);
+		try {
+			bgImage = ImageIO.read(new File("./Image/Background.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.addMouseListener(this);
+		this.setVisible(true);
+	}
+	
+
+	public void paint(Graphics g) {
+		g.drawImage(bgImage, 10, 25, this);
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//System.out.println(e.getX());
+		//System.out.println(e.getY());
+		x = e.getX();
+		y = e.getY();
+		if(x>490 && x<610 && y>235 && y<340) {
+			
+			GameScreen gs=new GameScreen();
+			this.setVisible(false);
+		}
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
