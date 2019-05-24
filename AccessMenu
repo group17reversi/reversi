@@ -91,7 +91,13 @@ public class AccessMenu extends JFrame implements MouseListener {
 			GameScreen gs=new GameScreen();
 			this.setVisible(false);
 		}
+		if(x>490 && x<610 && y>445 && y<555) {
+			
+			recordScreen rs = new recordScreen();
+			this.setVisible(false);
+		}
 		
+	}
 	}
 
 	@Override
