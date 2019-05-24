@@ -1,4 +1,4 @@
- package reversi;
+package Reversi;
 
  import java.awt.Color;
 import java.awt.Font;
@@ -28,6 +28,8 @@ public class GameScreen extends JFrame implements MouseListener {
 	int [][] allChess = new int[8][8];
 	//当前棋色
 	boolean isBlack = true;
+	boolean gameOver = false;
+	boolean canPlace = true;
 	//初始化棋盘
 	Initialize c = new Initialize(allChess);
 	
@@ -52,8 +54,6 @@ public class GameScreen extends JFrame implements MouseListener {
 	
 	public void paint(Graphics g) {
 		g.drawImage(bgImage, 10, 25, this);
-		ChessState state = new ChessState(allChess, isBlack);
-		state.judgeState();
 		Chess chess = new Chess(allChess);
 		chess.Draw(g);
 		chess.Count();
@@ -67,6 +67,33 @@ public class GameScreen extends JFrame implements MouseListener {
 		else if(isBlack==false) {
 			g.setFont(new Font("Adobe Gothic Std B",Font.BOLD,32));
 			g.drawString("White  Turn",710,215);
+		}
+		if(gameOver == true) {
+			if(chess.Black() > chess.White()) {
+				JOptionPane.showMessageDialog(this,"Game Over.You win!");
+			}else if(chess.Black() < chess.White()) {
+				JOptionPane.showMessageDialog(this,"Game Over.You lose!");
+			}else if(chess.Black() == chess.White()){
+				JOptionPane.showMessageDialog(this,"Game Over.This is a draw!");
+			}
+		}else {
+			if(canPlace == false) {
+				if(isBlack = false) {
+					JOptionPane.showMessageDialog(this,"You cannot place chess, it is opponent's turn!");
+					isBlack = true;
+					System.out.println(isBlack);
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					this.repaint();
+				}else {
+					JOptionPane.showMessageDialog(this,"Opponent cannot place chess, it is your turn!");
+					isBlack = false;
+					System.out.println(isBlack);
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					this.repaint();
+				}
+			}
 		}
 	}
 	@Override
@@ -93,7 +120,6 @@ public class GameScreen extends JFrame implements MouseListener {
 		//System.out.println(e.getX());
 		//System.out.println(e.getY());
 		if(isBlack == true) {
-			
 			x = e.getX();
 			y = e.getY();
 			if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
@@ -109,15 +135,39 @@ public class GameScreen extends JFrame implements MouseListener {
 				}else {
 					JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
 				}
-				//state.judgeState();
+				ChessState state = new ChessState(allChess, isBlack);
+				state.judgeState();
+				GameOver go = new GameOver(allChess);
+				go.isGameOver();
+				go.canPlace();
+				gameOver = go.Over();
+				canPlace = go.Place();
 				this.repaint();
 			}
 			if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
 				isBlack = true;
 				c = new Initialize(allChess);
+				ChessState state = new ChessState(allChess, isBlack);
+				state.judgeState();
+				GameOver go = new GameOver(allChess);
+				go.isGameOver();
+				go.canPlace();
+				gameOver = go.Over();
+				canPlace = go.Place();
 				this.repaint();
 			}
-		}else {
+		}
+		if(x>697 && x<875 && y>556 && y<620) {
+			AccessMenu am = new AccessMenu();
+			this.setVisible(false);
+		}
+		
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if(isBlack == false) {
 			Minimax m = new Minimax();
 			allChess = m.Min(allChess);
 			//x = m.getX();
@@ -126,14 +176,14 @@ public class GameScreen extends JFrame implements MouseListener {
 			isBlack = true;
 			Reversal r = new Reversal(allChess,x,y);
 			r.change();
+			ChessState state = new ChessState(allChess, isBlack);
+			state.judgeState();
+			GameOver go = new GameOver(allChess);
+			go.isGameOver();
+			go.canPlace();
+			gameOver = go.Over();
+			canPlace = go.Place();
 			this.repaint();
 		}
-		
-	}
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }
