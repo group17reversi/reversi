@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Chess {
-	//0 不可下棋点，1 黑棋，2 白棋, 3可下棋点
+	//0 不可下棋点，1 黑棋（玩家），2 白棋（电脑）, 3可下棋点
 	int [][] allChess = new int[8][8];
 	int black = 0;
 	int white = 0;
@@ -19,22 +19,26 @@ public class Chess {
 				if(allChess[i][j] == 1) {
 					int tempX = 42 + i * Constant.Grid_Length + Constant.Grid_Length / 2;
 					int tempY = 64 + j * Constant.Grid_Length + Constant.Grid_Length / 2;
+					Color c = g.getColor();
 					g.setColor(Color.BLACK);
 					g.fillOval(tempX - Constant.ChessRadius , tempY - Constant.ChessRadius , Constant.ChessRadius * 2 , Constant.ChessRadius * 2);
+					g.setColor(c);
 				}
 				if(allChess[i][j] == 2){
 					int tempX = 42 + i * Constant.Grid_Length + Constant.Grid_Length / 2;
 					int tempY = 64 + j * Constant.Grid_Length + Constant.Grid_Length / 2;
+					Color c = g.getColor();
 					g.setColor(Color.WHITE);
 					g.fillOval(tempX - Constant.ChessRadius , tempY - Constant.ChessRadius , Constant.ChessRadius * 2 , Constant.ChessRadius * 2);
-					//g.setColor(Color.BLACK);
-					//g.drawOval(tempX - Constant.ChessRadius , tempY - Constant.ChessRadius , Constant.ChessRadius * 2 , Constant.ChessRadius * 2);
+					g.setColor(c);
 				}
 				if(allChess[i][j] == 3) {
 					int tempX = 42 + i * Constant.Grid_Length + Constant.Grid_Length / 2;
 					int tempY = 64 + j * Constant.Grid_Length + Constant.Grid_Length / 2;
+					Color c = g.getColor();
 					g.setColor(Color.DARK_GRAY);
 					g.fillOval(tempX - 5 , tempY - 5 , 10 , 10);
+					g.setColor(c);
 				}
 			}
 		}

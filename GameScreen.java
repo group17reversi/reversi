@@ -30,6 +30,7 @@ public class GameScreen extends JFrame implements MouseListener {
 	boolean isBlack = true;
 	boolean gameOver = false;
 	boolean canPlace = true;
+	//boolean PVP = false;
 	//³õÊ¼»¯ÆåÅÌ
 	Initialize c = new Initialize(allChess);
 	
@@ -57,16 +58,22 @@ public class GameScreen extends JFrame implements MouseListener {
 		Chess chess = new Chess(allChess);
 		chess.Draw(g);
 		chess.Count();
+		Font f = g.getFont();
 		g.setFont(new Font("ºÚÌå",Font.BOLD,40));
 		g.drawString(String.valueOf(chess.Black()), 860, 270);
 		g.drawString(String.valueOf(chess.White()), 860, 370);
+		g.setFont(f);
 		if(isBlack==true) {
+			f = g.getFont();
 			g.setFont(new Font("Adobe Gothic Std B",Font.BOLD,32));
-			g.drawString("Black  Turn",710,215);
+			g.drawString("Your Turn",710,215);
+			g.setFont(f);
 		}
 		else if(isBlack==false) {
+			f = g.getFont();
 			g.setFont(new Font("Adobe Gothic Std B",Font.BOLD,32));
-			g.drawString("White  Turn",710,215);
+			g.drawString("Opponent's Turn",690,215);
+			g.setFont(f);
 		}
 		if(gameOver == true) {
 			if(chess.Black() > chess.White()) {
