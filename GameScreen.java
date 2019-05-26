@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -30,9 +31,14 @@ public class GameScreen extends JFrame implements MouseListener {
 	boolean isBlack = true;
 	boolean gameOver = false;
 	boolean canPlace = true;
-	//boolean PVP = false;
 	//³õÊ¼»¯ÆåÅÌ
 	Initialize c = new Initialize(allChess);
+	//Modes m = new Modes();
+	//true:one player false:two players
+	boolean mode;
+	//Levels l = new Levels();
+	//0:easy 1:hard
+	int level;
 	
 	public GameScreen() {
 		this.setTitle("Reversi");
@@ -126,42 +132,131 @@ public class GameScreen extends JFrame implements MouseListener {
 		// TODO Auto-generated method stub
 		//System.out.println(e.getX());
 		//System.out.println(e.getY());
-		if(isBlack == true) {
-			x = e.getX();
-			y = e.getY();
-			if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
-				x = (x - 42) / Constant.Grid_Length;
-				y = (y - 64) / Constant.Grid_Length;
-				if(allChess[x][y] == 3) {
-					allChess[x][y] = 1;
-					isBlack = false;
-					Reversal r = new Reversal(allChess,x,y);
-					r.change();
-				}else if(allChess[x][y] == 0) {
-					JOptionPane.showMessageDialog(this,"You can not put chess here.");
-				}else {
-					JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
+		if(mode == true) {
+			if(isBlack == true) {
+				//System.out.println("black");
+				x = e.getX();
+				y = e.getY();
+				if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
+					x = (x - 42) / Constant.Grid_Length;
+					y = (y - 64) / Constant.Grid_Length;
+					if(allChess[x][y] == 3) {
+						allChess[x][y] = 1;
+						isBlack = false;
+						Reversal r = new Reversal(allChess,x,y);
+						r.change();
+					}else if(allChess[x][y] == 0 && isBlack == true) {
+						System.out.println("1");
+						JOptionPane.showMessageDialog(this,"You can not put chess here.");
+					}else if((allChess[x][y] == 1 || allChess[x][y] == 2) && isBlack == true) {
+						System.out.println("2");
+						JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
+					}
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
 				}
-				ChessState state = new ChessState(allChess, isBlack);
-				state.judgeState();
-				GameOver go = new GameOver(allChess);
-				go.isGameOver();
-				go.canPlace();
-				gameOver = go.Over();
-				canPlace = go.Place();
-				this.repaint();
+				if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
+					isBlack = true;
+					c = new Initialize(allChess);
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+				}
 			}
-			if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
-				isBlack = true;
-				c = new Initialize(allChess);
-				ChessState state = new ChessState(allChess, isBlack);
-				state.judgeState();
-				GameOver go = new GameOver(allChess);
-				go.isGameOver();
-				go.canPlace();
-				gameOver = go.Over();
-				canPlace = go.Place();
-				this.repaint();
+		}
+		
+		if(mode == false) {
+			if(isBlack == true) {
+				//System.out.println("black");
+				x = e.getX();
+				y = e.getY();
+				if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
+					x = (x - 42) / Constant.Grid_Length;
+					y = (y - 64) / Constant.Grid_Length;
+					if(allChess[x][y] == 3) {
+						allChess[x][y] = 1;
+						isBlack = false;
+						Reversal r = new Reversal(allChess,x,y);
+						r.change();
+					}else if(allChess[x][y] == 0 && isBlack == true) {
+						System.out.println("1");
+						JOptionPane.showMessageDialog(this,"You can not put chess here.");
+					}else if((allChess[x][y] == 1 || allChess[x][y] == 2) && isBlack == true) {
+						System.out.println("2");
+						JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
+					}
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+				}
+				if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
+					isBlack = true;
+					c = new Initialize(allChess);
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+				}
+			}else{
+				//System.out.println("white");
+				x = e.getX();
+				y = e.getY();
+				if (x >= 42 && x <= 634 && y >= 64 && y <= 656) {
+					x = (x - 42) / Constant.Grid_Length;
+					y = (y - 64) / Constant.Grid_Length;
+					if(allChess[x][y] == 3) {
+						allChess[x][y] = 2;
+						isBlack = true;
+						Reversal r = new Reversal(allChess,x,y);
+						r.change();
+					}else if(allChess[x][y] == 0 && isBlack == false) {
+						System.out.println("3");
+						JOptionPane.showMessageDialog(this,"You can not put chess here.");
+					}else if((allChess[x][y] == 1 || allChess[x][y] == 2) && isBlack == false){
+						System.out.println("4");
+						JOptionPane.showMessageDialog(this,"It has chess here,choose another place.");
+					}
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+				}
+				if (x >= 694 && x <= 874 && y >= 472 && y <= 540) {
+					isBlack = true;
+					c = new Initialize(allChess);
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+				}
 			}
 		}
 		if(x>697 && x<875 && y>556 && y<620) {
@@ -174,23 +269,63 @@ public class GameScreen extends JFrame implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(isBlack == false) {
-			Minimax m = new Minimax();
-			allChess = m.Min(allChess);
-			//x = m.getX();
-			//y = m.getY();
-			//allChess[x][y] = 2;
-			isBlack = true;
-			Reversal r = new Reversal(allChess,x,y);
-			r.change();
-			ChessState state = new ChessState(allChess, isBlack);
-			state.judgeState();
-			GameOver go = new GameOver(allChess);
-			go.isGameOver();
-			go.canPlace();
-			gameOver = go.Over();
-			canPlace = go.Place();
-			this.repaint();
+		if(mode == true) {
+			if(isBlack == false) {
+				if(level == 1) {
+					Minimax m = new Minimax();
+					allChess = m.Min(allChess);
+					//x = m.getX();
+					//y = m.getY();
+					//allChess[x][y] = 2;
+					isBlack = true;
+					Reversal r = new Reversal(allChess,x,y);
+					r.change();
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+					System.out.println("hard");
+					
+				}else if(level == 0){
+					/*int min = 0;
+			        int max = 7;
+			        int x = new Random().nextInt(max-min)+min;
+			        int y = new Random().nextInt(max-min)+min;
+			        while(allChess[x][y] != 3) {
+			        	x = new Random().nextInt(max-min)+min;
+				        y = new Random().nextInt(max-min)+min;
+				        System.out.println("----------");
+			        }*/
+					int x = 0,y = 0;
+					for(int i = 0; i < 8; i++) {
+						for(int j = 0; j < 8; j++) {
+							if(allChess[i][j] == 3) {
+								x = i;
+								y = j;
+							}
+						}
+					}
+			        allChess[x][y] = 2;
+			        isBlack = true;
+					Reversal r = new Reversal(allChess,x,y);
+					r.change();
+					ChessState state = new ChessState(allChess, isBlack);
+					state.judgeState();
+					GameOver go = new GameOver(allChess);
+					go.isGameOver();
+					go.canPlace();
+					gameOver = go.Over();
+					canPlace = go.Place();
+					this.repaint();
+					System.out.println("easy");
+					
+				}
+				
+			}
 		}
 	}
 }
