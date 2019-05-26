@@ -1,0 +1,20 @@
+public void mousePressed(MouseEvent e) {
+		//System.out.println(e.getX());
+		//System.out.println(e.getY());
+		x = e.getX();
+		y = e.getY();
+		if(x>490 && x<610 && y>235 && y<340) {
+			//GameScreen gs=new GameScreen();
+			Modes m=new Modes();
+			this.setVisible(false);
+		}
+		if(x>710 && x<830 && y>230 && y<340) {
+			RuleMenu rm=new RuleMenu();
+			this.setVisible(false);
+		}
+		
+		if(x>705 && x<830 && y>450 && y<550) {
+			AboutUs au=new AboutUs();
+			this.setVisible(false);
+		}
+	}
