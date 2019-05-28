@@ -21,17 +21,17 @@ public class GameScreen extends JFrame implements MouseListener {
 	int width = Toolkit.getDefaultToolkit().getScreenSize().width;
 	int height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	BufferedImage bgImage = null;
-	//Æå×Ó×ø±ê
+	//æ£‹å­åæ ‡
 	int x = 0;
 	int y = 0;
-	//±£´æÖ®Ç°ÏÂµÄÆå×Ó×ø±ê
-	//0 ÎÞÆå×Ó£¬1 ºÚÆå£¬2 °×Æå
+	//ä¿å­˜ä¹‹å‰ä¸‹çš„æ£‹å­åæ ‡
+	//0 æ— æ£‹å­ï¼Œ1 é»‘æ£‹ï¼Œ2 ç™½æ£‹
 	int [][] allChess = new int[8][8];
-	//µ±Ç°ÆåÉ«
+	//å½“å‰æ£‹è‰²
 	boolean isBlack = true;
 	boolean gameOver = false;
 	boolean canPlace = true;
-	//³õÊ¼»¯ÆåÅÌ
+	//åˆå§‹åŒ–æ£‹ç›˜
 	Initialize c = new Initialize(allChess);
 	//Modes m = new Modes();
 	//true:one player false:two players
@@ -39,14 +39,14 @@ public class GameScreen extends JFrame implements MouseListener {
 	//Levels l = new Levels();
 	//0:easy 1:hard
 	int level;
-	
+	Record re = new Record(null, null, null);
 	public GameScreen() {
 		this.setTitle("Reversi");
 		this.setSize(Constant.Width ,Constant.Height );
 		this.setLocation((width - Constant.Width)/2, (height - Constant.Height)/2);
-		//´°Ìå´óÐ¡²»¿É±ä
+		//çª—ä½“å¤§å°ä¸å¯å˜
 		this.setResizable(false);
-		//Ä¬ÈÏ¹Ø±Õºó³ÌÐò½áÊø
+		//é»˜è®¤å…³é—­åŽç¨‹åºç»“æŸ
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			bgImage = ImageIO.read(new File("./Image/background.jpg"));
@@ -55,17 +55,45 @@ public class GameScreen extends JFrame implements MouseListener {
 			e.printStackTrace();
 		}
 		this.addMouseListener(this);
-		//ÏÔÊ¾´°Ìå
+		//æ˜¾ç¤ºçª—ä½“
 		this.setVisible(true);
 	}
-	
+	public void newRecord(Record r) {
+		if (level == 1) {
+			r.level = "hard";
+		}else if (level==0) {
+			r.level = "easy";
+		}
+		if(mode == true) {
+			r.mode = "one player";
+		}else if (mode == false) {
+			r.mode = "two players";
+			r.level = "    ";
+			if (r.winner == "computer") {
+				r.winner = "white   ";
+			}else if (r.winner == "player") {
+				r.winner = "black   ";
+			}
+		}
+		
+	}
+	public static void fileChaseFW(String filePath, String content) {
+        	try {
+            	//æž„é€ å‡½æ•°ä¸­çš„ç¬¬äºŒä¸ªå‚æ•°trueè¡¨ç¤ºä»¥è¿½åŠ å½¢å¼å†™æ–‡ä»¶
+            	FileWriter fw = new FileWriter(filePath,true);
+            	fw.write(content);
+            	fw.close();
+        	} catch (IOException e) {
+            	System.out.println("failedï¼" + e);
+        	}
+    	}
 	public void paint(Graphics g) {
 		g.drawImage(bgImage, 10, 25, this);
 		Chess chess = new Chess(allChess);
 		chess.Draw(g);
 		chess.Count();
 		Font f = g.getFont();
-		g.setFont(new Font("ºÚÌå",Font.BOLD,40));
+		g.setFont(new Font("é»‘ä½“",Font.BOLD,40));
 		g.drawString(String.valueOf(chess.Black()), 860, 270);
 		g.drawString(String.valueOf(chess.White()), 860, 370);
 		g.setFont(f);
@@ -84,11 +112,25 @@ public class GameScreen extends JFrame implements MouseListener {
 		if(gameOver == true) {
 			if(chess.Black() > chess.White()) {
 				JOptionPane.showMessageDialog(this,"Game Over.You win!");
+				re.winner = "player";
 			}else if(chess.Black() < chess.White()) {
 				JOptionPane.showMessageDialog(this,"Game Over.You lose!");
+				re.winner = "computer";
 			}else if(chess.Black() == chess.White()){
 				JOptionPane.showMessageDialog(this,"Game Over.This is a draw!");
+				re.winner = "draw";
 			}
+			newRecord(re);
+			String content = re.winner + "                     "+ re.level +"                      "+ re.mode + "\n";
+			try {
+	            	FileWriter fw = new FileWriter("./records/records.txt", true);
+	            	BufferedWriter bw = new BufferedWriter(fw);
+	           	bw.write(content);
+	            	bw.close();
+	            	fw.close();
+	        	} catch (Exception e) {
+	            	e.printStackTrace();
+	        	}
 		}else {
 			if(canPlace == false) {
 				if(isBlack = false) {
