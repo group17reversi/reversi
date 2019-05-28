@@ -37,6 +37,41 @@ public class recordScreen extends JFrame implements MouseListener{
 	}
 	public void paint(Graphics g) {
 		g.drawImage(bgImage, 10, 25, this);
+		g.setFont(new Font("Comic Sans MS",Font.BOLD,26));
+		ArrayList<String> records = read();
+		int x = 115;
+		int y = 224;
+		int n = Math.min(5, records.size());
+		for (int i = 0; i<n;i++) {
+			String r = records.get(i);
+			g.drawString(r, x, y);
+			y=y+50;
+		}
+		String total = " " + records.size();
+		g.drawString(total,327,585);
+	}
+	public ArrayList<String>  read() {
+		BufferedReader reader = null;
+        	ArrayList<String> records = new ArrayList<String>();
+        try {   
+            reader = new BufferedReader(new FileReader("./records/records.txt"));  
+            String tempString = null;  
+            while ((tempString = reader.readLine()) != null) { 
+            	records.add(0, tempString);
+            }  
+            reader.close();  
+        } catch (IOException ex ){  
+            ex.printStackTrace();  
+        } finally {  
+            if (reader != null) {  
+                try {  
+                    reader.close();  
+                } catch (IOException e1) {  
+                }  
+            }  
+        }
+		return records;
+        
 	}
 	public void mousePressed(MouseEvent e) {
 		//System.out.println(e.getX());
