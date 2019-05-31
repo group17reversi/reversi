@@ -96,16 +96,46 @@ public class Minimax {
 		R.change();
 		return c;
 	}
-	/*public int getMinX() {
-		return minX;
+	public int[][] EasyLevel(int[][] c) {
+		int p = 0;
+		int q = 64;
+		int x = 0,y = 0;
+		int[][] chess1 = new int[8][8];
+		for(int m = 0; m < 8; m++) {
+			for(int n = 0; n < 8; n++) {
+				chess1[m][n] = c[m][n];
+			}
+		}
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				if(chess1[i][j] == 3) {
+					int[][] chess2 = new int[8][8];
+					for(int m = 0; m < 8; m++) {
+						for(int n = 0; n < 8; n++) {
+							chess2[m][n] = chess1[m][n];
+						}
+					}
+					chess2[i][j] = 2;
+					isBlack = true;
+					R = new Reversal(chess2,i,j);
+					R.change();
+					S = new ChessState(chess2,isBlack);
+					S.judgeState();
+					chess2 = Max(chess2);
+					C = new Chess(chess2);
+					C.Count();
+					if(C.black > p) {
+						p = C.black;
+						x = i;
+						y = j;
+					}						
+				}
+			}
+		}
+		c[x][y] = 2;
+		R = new Reversal(c,x,y);
+		R.change();
+		//System.out.println("x " + x + "----" + "y " + y);
+		return c;
 	}
-	public int getMinY() {
-		return minY;
-	}
-	public int getMaxX() {
-		return maxX;
-	}
-	public int getMaxY() {
-		return maxY;
-	}*/
 }

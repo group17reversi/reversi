@@ -7,8 +7,11 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -21,17 +24,17 @@ public class GameScreen extends JFrame implements MouseListener {
 	int width = Toolkit.getDefaultToolkit().getScreenSize().width;
 	int height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	BufferedImage bgImage = null;
-	//æ£‹å­åæ ‡
+	//Æå×Ó×ø±ê
 	int x = 0;
 	int y = 0;
-	//ä¿å­˜ä¹‹å‰ä¸‹çš„æ£‹å­åæ ‡
-	//0 æ— æ£‹å­ï¼Œ1 é»‘æ£‹ï¼Œ2 ç™½æ£‹
+	//±£´æÖ®Ç°ÏÂµÄÆå×Ó×ø±ê
+	//0 ²»¿ÉÏÂÆåµã£¬1 ºÚÆå£¬2 °×Æå, 3 ¿ÉÏÂÆåµã
 	int [][] allChess = new int[8][8];
-	//å½“å‰æ£‹è‰²
+	//µ±Ç°ÆåÉ«
 	boolean isBlack = true;
 	boolean gameOver = false;
 	boolean canPlace = true;
-	//åˆå§‹åŒ–æ£‹ç›˜
+	//³õÊ¼»¯ÆåÅÌ
 	Initialize c = new Initialize(allChess);
 	//Modes m = new Modes();
 	//true:one player false:two players
@@ -40,13 +43,14 @@ public class GameScreen extends JFrame implements MouseListener {
 	//0:easy 1:hard
 	int level;
 	Record re = new Record(null, null, null);
+	
 	public GameScreen() {
 		this.setTitle("Reversi");
 		this.setSize(Constant.Width ,Constant.Height );
 		this.setLocation((width - Constant.Width)/2, (height - Constant.Height)/2);
-		//çª—ä½“å¤§å°ä¸å¯å˜
+		//´°Ìå´óÐ¡²»¿É±ä
 		this.setResizable(false);
-		//é»˜è®¤å…³é—­åŽç¨‹åºç»“æŸ
+		//Ä¬ÈÏ¹Ø±Õºó³ÌÐò½áÊø
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			bgImage = ImageIO.read(new File("./Image/background.jpg"));
@@ -55,7 +59,7 @@ public class GameScreen extends JFrame implements MouseListener {
 			e.printStackTrace();
 		}
 		this.addMouseListener(this);
-		//æ˜¾ç¤ºçª—ä½“
+		//ÏÔÊ¾´°Ìå
 		this.setVisible(true);
 	}
 	public void newRecord(Record r) {
@@ -70,30 +74,31 @@ public class GameScreen extends JFrame implements MouseListener {
 			r.mode = "two players";
 			r.level = "    ";
 			if (r.winner == "computer") {
-				r.winner = "white   ";
+				r.winner = "white     ";
 			}else if (r.winner == "player") {
-				r.winner = "black   ";
+				r.winner = "black     ";
 			}
 		}
 		
 	}
 	public static void fileChaseFW(String filePath, String content) {
-        	try {
-            	//æž„é€ å‡½æ•°ä¸­çš„ç¬¬äºŒä¸ªå‚æ•°trueè¡¨ç¤ºä»¥è¿½åŠ å½¢å¼å†™æ–‡ä»¶
-            	FileWriter fw = new FileWriter(filePath,true);
-            	fw.write(content);
-            	fw.close();
-        	} catch (IOException e) {
-            	System.out.println("failedï¼" + e);
-        	}
+		try {
+        	//¹¹Ôìº¯ÊýÖÐµÄµÚ¶þ¸ö²ÎÊýtrue±íÊ¾ÒÔ×·¼ÓÐÎÊ½Ð´ÎÄ¼þ
+        	FileWriter fw = new FileWriter(filePath,true);
+        	fw.write(content);
+        	fw.close();
+    	} catch (IOException e) {
+        	System.out.println("failed£¡" + e);
     	}
+	}
+	
 	public void paint(Graphics g) {
 		g.drawImage(bgImage, 10, 25, this);
 		Chess chess = new Chess(allChess);
 		chess.Draw(g);
 		chess.Count();
 		Font f = g.getFont();
-		g.setFont(new Font("é»‘ä½“",Font.BOLD,40));
+		g.setFont(new Font("ºÚÌå",Font.BOLD,40));
 		g.drawString(String.valueOf(chess.Black()), 860, 270);
 		g.drawString(String.valueOf(chess.White()), 860, 370);
 		g.setFont(f);
@@ -112,16 +117,16 @@ public class GameScreen extends JFrame implements MouseListener {
 		if(gameOver == true) {
 			if(chess.Black() > chess.White()) {
 				JOptionPane.showMessageDialog(this,"Game Over.You win!");
-				re.winner = "player";
+				re.winner = "player  ";
 			}else if(chess.Black() < chess.White()) {
 				JOptionPane.showMessageDialog(this,"Game Over.You lose!");
 				re.winner = "computer";
 			}else if(chess.Black() == chess.White()){
 				JOptionPane.showMessageDialog(this,"Game Over.This is a draw!");
-				re.winner = "draw";
+				re.winner = "draw    ";
 			}
 			newRecord(re);
-			String content = re.winner + "                     "+ re.level +"                      "+ re.mode + "\n";
+			String content = re.winner + "                  "+ re.level +"                      "+ re.mode + "\n";
 			try {
 	            	FileWriter fw = new FileWriter("./records/records.txt", true);
 	            	BufferedWriter bw = new BufferedWriter(fw);
@@ -215,6 +220,28 @@ public class GameScreen extends JFrame implements MouseListener {
 					canPlace = go.Place();
 					this.repaint();
 				}
+			}else {
+				if(level == 1) {
+					Minimax m = new Minimax();
+					allChess = m.Min(allChess);
+				}else if(level == 0) {
+					Minimax m = new Minimax();
+					allChess = m.EasyLevel(allChess);
+				}
+				//x = m.getX();
+				//y = m.getY();
+				//allChess[x][y] = 2;
+				isBlack = true;
+				Reversal r = new Reversal(allChess,x,y);
+				r.change();
+				ChessState state = new ChessState(allChess, isBlack);
+				state.judgeState();
+				GameOver go = new GameOver(allChess);
+				go.isGameOver();
+				go.canPlace();
+				gameOver = go.Over();
+				canPlace = go.Place();
+				this.repaint();
 			}
 		}
 		
@@ -311,63 +338,31 @@ public class GameScreen extends JFrame implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(mode == true) {
+		/*if(mode == true) {
 			if(isBlack == false) {
 				if(level == 1) {
 					Minimax m = new Minimax();
 					allChess = m.Min(allChess);
-					//x = m.getX();
-					//y = m.getY();
-					//allChess[x][y] = 2;
-					isBlack = true;
-					Reversal r = new Reversal(allChess,x,y);
-					r.change();
-					ChessState state = new ChessState(allChess, isBlack);
-					state.judgeState();
-					GameOver go = new GameOver(allChess);
-					go.isGameOver();
-					go.canPlace();
-					gameOver = go.Over();
-					canPlace = go.Place();
-					this.repaint();
-					System.out.println("hard");
-					
-				}else if(level == 0){
-					/*int min = 0;
-			        int max = 7;
-			        int x = new Random().nextInt(max-min)+min;
-			        int y = new Random().nextInt(max-min)+min;
-			        while(allChess[x][y] != 3) {
-			        	x = new Random().nextInt(max-min)+min;
-				        y = new Random().nextInt(max-min)+min;
-				        System.out.println("----------");
-			        }*/
-					int x = 0,y = 0;
-					for(int i = 0; i < 8; i++) {
-						for(int j = 0; j < 8; j++) {
-							if(allChess[i][j] == 3) {
-								x = i;
-								y = j;
-							}
-						}
-					}
-			        allChess[x][y] = 2;
-			        isBlack = true;
-					Reversal r = new Reversal(allChess,x,y);
-					r.change();
-					ChessState state = new ChessState(allChess, isBlack);
-					state.judgeState();
-					GameOver go = new GameOver(allChess);
-					go.isGameOver();
-					go.canPlace();
-					gameOver = go.Over();
-					canPlace = go.Place();
-					this.repaint();
-					System.out.println("easy");
-					
+				}else if(level == 0) {
+					Minimax m = new Minimax();
+					allChess = m.EasyLevel(allChess);
 				}
-				
+				//x = m.getX();
+				//y = m.getY();
+				//allChess[x][y] = 2;
+				isBlack = true;
+				Reversal r = new Reversal(allChess,x,y);
+				r.change();
+				ChessState state = new ChessState(allChess, isBlack);
+				state.judgeState();
+				GameOver go = new GameOver(allChess);
+				go.isGameOver();
+				go.canPlace();
+				gameOver = go.Over();
+				canPlace = go.Place();
+				this.repaint();
+				//System.out.println("hard");
 			}
-		}
+		}*/
 	}
 }
