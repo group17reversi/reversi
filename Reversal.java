@@ -52,7 +52,6 @@ public class Reversal {
 				while(n < 8 && allChess[x][n] == 2) {
 					n++;
 				}
-				//System.out.println(x + " " + n);
 				if(n < 8 && allChess[x][n] == 1) {
 					while(n != y) {
 						allChess[x][n] = 1;
@@ -163,7 +162,6 @@ public class Reversal {
 				while(n < 8 && allChess[x][n] == 1) {
 					n++;
 				}
-				//System.out.println(x + " " + n);
 				if(n < 8 && allChess[x][n] == 2) {
 					while(n != y) {
 						allChess[x][n] = 2;
