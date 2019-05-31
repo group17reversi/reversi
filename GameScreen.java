@@ -220,28 +220,6 @@ public class GameScreen extends JFrame implements MouseListener {
 					canPlace = go.Place();
 					this.repaint();
 				}
-			}else {
-				if(level == 1) {
-					Minimax m = new Minimax();
-					allChess = m.Min(allChess);
-				}else if(level == 0) {
-					Minimax m = new Minimax();
-					allChess = m.EasyLevel(allChess);
-				}
-				//x = m.getX();
-				//y = m.getY();
-				//allChess[x][y] = 2;
-				isBlack = true;
-				Reversal r = new Reversal(allChess,x,y);
-				r.change();
-				ChessState state = new ChessState(allChess, isBlack);
-				state.judgeState();
-				GameOver go = new GameOver(allChess);
-				go.isGameOver();
-				go.canPlace();
-				gameOver = go.Over();
-				canPlace = go.Place();
-				this.repaint();
 			}
 		}
 		
@@ -338,7 +316,7 @@ public class GameScreen extends JFrame implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		/*if(mode == true) {
+		if(mode == true) {
 			if(isBlack == false) {
 				if(level == 1) {
 					Minimax m = new Minimax();
@@ -363,6 +341,6 @@ public class GameScreen extends JFrame implements MouseListener {
 				this.repaint();
 				//System.out.println("hard");
 			}
-		}*/
+		}
 	}
 }
