@@ -1,0 +1,10 @@
+player                     easy                      one player
+black                                                two players
+computer                   hard                      one player
+player                     hard                      one player
+player                     hard                      one player
+player                     easy                      one player
+player                     hard                      one player
+computer                   easy                      one player
+black                                                two players
+white                                                two players
